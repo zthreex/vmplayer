@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.zthreex.vmplayer.R;
 import com.zthreex.vmplayer.helper.WifiAdmin;
@@ -14,7 +15,6 @@ import com.zthreex.vmplayer.player.VlcMediaPlayer;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -23,41 +23,32 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.GridView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ProgramListActivity extends Activity {
 	/*Global*/
-	WifiAdmin mWifiAdmin;
-	ListView listView;
-	String[] titles = new String[12];
-	int[] resIds = { R.drawable.cctv1, R.drawable.cctv1, R.drawable.cctv1,
-			R.drawable.cctv1, R.drawable.cctv1, R.drawable.cctv1,
-			R.drawable.cctv1, R.drawable.cctv1, R.drawable.cctv1,
-			R.drawable.cctv1, R.drawable.cctv1, R.drawable.cctv1 };
-	
-	ProgressDialog mProgressDialog = null;
-	ConnectivityManager cm;
-	NetworkInfo netinfo;
 	String sIpAddress = "http://192.168.0.1/vmvideo/"; //mod1
+	private static final int nChannelNum = 12;
+	String[] titles = new String[nChannelNum];
+	int[] resIds = new int[nChannelNum];
+
+	ProgressDialog mProgressDialog = null;
+	WifiAdmin mWifiAdmin;
 	EditText mEditTextIPaddress;
 	Button mBtnConfirm;
+	GridView mGridView;
 	
 	private ProgressDialog progressDialog = null; 
 	static final int MESSAGETYPE_01 = 0x0001;
-	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,7 +63,7 @@ public class ProgramListActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case 1:
-			titles = sGetProgramList(true);
+			titles = sGetProgramList(false);
 			if(null == titles){
 				Toast.makeText(getApplicationContext(), "Server unreachable", Toast.LENGTH_LONG).show();
 			}
@@ -103,9 +94,12 @@ public class ProgramListActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.list);
+		this.setContentView(R.layout.gridview);
 		this.setTitle("ProgramList");
-		ShowProgramList();
+		
+		for(int i=0; i<nChannelNum; i++){
+			resIds[i] = R.drawable.cctv1;
+		}	
 		
 		/* Connect to wifi server and acquire the program list */  //mod3
 		/*mWifiAdmin = new WifiAdmin(getApplicationContext());
@@ -115,8 +109,7 @@ public class ProgramListActivity extends Activity {
 
 		int retry_count = 0;
 		do {
-			//titles = sGetProgramList(false);
-			titles = sGetProgramList(true);
+			titles = sGetProgramList(false);
 			retry_count++;
 			Log.e("vmvideo", "retry:" + String.valueOf(retry_count));
 			if (retry_count >= 5) {
@@ -125,66 +118,38 @@ public class ProgramListActivity extends Activity {
 			}
 		} while (titles[0] == null);
 		ShowProgramList();
-
-		listView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
-				setTitle("Play" + titles[arg2]);
-				StringBuilder uri = new StringBuilder();
-				uri.append(sIpAddress);
-				switch (arg2) {
-				case 0:
-					uri.append("012b0001");
-					break;
-				case 1:
-					uri.append("012b0002");
-					break;
-				case 2:
-					uri.append("012b0003");
-					break;
-				case 3:
-					uri.append("012b0004");
-					break;
-				case 4:
-					uri.append("012b0005");
-					break;
-				case 5:
-					uri.append("012b0006");
-					break;
-				case 6:
-					uri.append("01300001");
-					break;
-				case 7:
-					uri.append("01300002");
-					break;
-				case 8:
-					uri.append("01300003");
-					break;
-				case 9:
-					uri.append("01300004");
-					break;
-				case 10:
-					uri.append("01300005");
-					break;
-				case 11:
-					uri.append("01300006");
-					break;
-				default:
-					break;
-				}
-				Intent intent = new Intent(getApplicationContext(),
-						PlayerActivity.class);
-				ArrayList<String> playlist = new ArrayList<String>();
-				playlist.add(uri.toString());
-				intent.putExtra("selected", 0);
-				intent.putExtra("playlist", playlist);
-				startActivity(intent);
-			}
-		});
+		mGridView.setOnItemClickListener(new ItemClickListener());
 	}
 	
+	  //当AdapterView被单击(触摸屏或者键盘)，则返回的Item单击事件  
+	class ItemClickListener implements OnItemClickListener {
+		public void onItemClick(AdapterView<?> arg0,// The AdapterView where the
+													// click happened
+				View arg1,// The view within the AdapterView that was clicked
+				int arg2,// The position of the view in the adapter
+				long arg3// The row id of the item that was clicked
+		) {
+			// 在本例中arg2=arg3
+			setTitle("Play" + titles[arg2]);
+			StringBuilder uri = new StringBuilder();
+			uri.append(sIpAddress);
+			
+			/*0-5,012B0001 - 012B0006*/
+			if( (arg2>=0) && (arg2<=5) )
+				uri.append("012b000"+String.valueOf(arg2+1));
+			/*6-11,01300001 - 01300006*/
+			else
+				uri.append("0130000"+String.valueOf(arg2-5));
+
+			Intent intent = new Intent(getApplicationContext(),
+					PlayerActivity.class);
+			ArrayList<String> playlist = new ArrayList<String>();
+			playlist.add(uri.toString());
+			intent.putExtra("selected", 0);
+			intent.putExtra("playlist", playlist);
+			startActivity(intent);
+		}
+	}
 	
 	/*Finish activity when Backkey pressed*/
 	@Override  
@@ -257,10 +222,23 @@ public class ProgramListActivity extends Activity {
 	public void onStop() {
 		super.onStop();
 	}
-
+	
+	/*Make the gridview of programlist*/
 	public void ShowProgramList() {
-		listView = (ListView) this.findViewById(R.id.mListView);
-		listView.setAdapter(new ListViewAdapter(titles, resIds));
+		mGridView =  (GridView) this.findViewById(R.id.gridview);
+		ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
+		for(int i=0; i<nChannelNum; i++){
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("ItemImage", resIds[i]);
+			map.put("ItemText", titles[i])	;
+			lstImageItem.add(map);
+		}
+		SimpleAdapter saImageItems = new SimpleAdapter(this, 
+																									lstImageItem,
+																									R.layout.item, 
+																									new String[] {"ItemImage", "ItemText"},
+																									new int[] {R.id.itemImage, R.id.itemTitle});
+		mGridView.setAdapter(saImageItems);
 	}
 
 	/*Get the program list.
@@ -312,50 +290,6 @@ public class ProgramListActivity extends Activity {
 			sProgram[11] = "CCTV-11";
 		}
 		return sProgram;
-	}
-
-	/* Icon lists class */
-	public class ListViewAdapter extends BaseAdapter {
-		View[] itemViews;
-
-		public ListViewAdapter(String[] itemTitles, int[] itemImageRes) {
-			itemViews = new View[itemTitles.length];
-			for (int i = 0; i < itemViews.length; i++) {
-				itemViews[i] = makeItemView(itemTitles[i], itemImageRes[i]);
-			}
-		}
-
-		public int getCount() {
-			return itemViews.length;
-		}
-
-		public View getItem(int position) {
-			return itemViews[position];
-		}
-
-		public long getItemId(int position) {
-			return position;
-		}
-
-		private View makeItemView(String strTitle, int resId) {
-			LayoutInflater inflater = (LayoutInflater) ProgramListActivity.this
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-			View itemView = inflater.inflate(R.layout.item, null);
-
-			TextView title = (TextView) itemView.findViewById(R.id.itemTitle);
-			title.setText(strTitle);
-			ImageView image = (ImageView) itemView.findViewById(R.id.itemImage);
-			image.setImageResource(resId);
-
-			return itemView;
-		}
-
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null)
-				return itemViews[position];
-			return convertView;
-		}
 	}
 
 }

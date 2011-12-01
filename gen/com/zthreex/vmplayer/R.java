@@ -32,9 +32,9 @@ public final class R {
     public static final class id {
         public static final int btnConfirm=0x7f050012;
         public static final int etIPaddress=0x7f050011;
-        public static final int itemImage=0x7f050000;
-        public static final int itemTitle=0x7f050001;
-        public static final int mListView=0x7f050002;
+        public static final int gridview=0x7f050000;
+        public static final int itemImage=0x7f050001;
+        public static final int itemTitle=0x7f050002;
         public static final int player_button_next=0x7f05000c;
         public static final int player_button_previous=0x7f05000a;
         public static final int player_button_switch_aspect_ratio=0x7f05000d;
@@ -53,8 +53,8 @@ public final class R {
         public static final int test_uri=0x7f050013;
     }
     public static final class layout {
-        public static final int item=0x7f030000;
-        public static final int list=0x7f030001;
+        public static final int gridview=0x7f030000;
+        public static final int item=0x7f030001;
         public static final int player=0x7f030002;
         public static final int player_control=0x7f030003;
         public static final int player_misc=0x7f030004;

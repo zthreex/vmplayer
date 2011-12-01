@@ -6,15 +6,16 @@
     <ImageView
         android:id="@+id/itemImage"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent" >
+        android:layout_height="wrap_content" 
+        android:layout_centerHorizontal="true">
     </ImageView>
 
     <TextView
         android:id="@+id/itemTitle"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/itemImage"
-        android:textSize="20dip" >
+        android:layout_below="@+id/itemImage"
+        android:layout_centerHorizontal="true">
     </TextView>
 
 </RelativeLayout>
