@@ -12,7 +12,7 @@ public class VlcMediaPlayer extends AbsMediaPlayer {
 		System.loadLibrary("vlccore");
 	}
 
-	private static final String LOGTAG = "ZTHREEX-VlcMediaPlayer";
+	private static final String LOGTAG = "zthreex-VlcMediaPlayer";
 
 	protected AbsMediaPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener = null;
 	protected AbsMediaPlayer.OnCompletionListener mOnCompletionListener = null;

@@ -16,8 +16,6 @@ import com.zthreex.vmplayer.player.VlcMediaPlayer;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -116,7 +114,7 @@ public class ProgramListActivity extends Activity {
 				Toast.makeText(getApplicationContext(), "Server unreachable", Toast.LENGTH_LONG).show();
 				break;
 			}
-		} while (titles[0] == null);
+		} while (null == titles[0]);
 		ShowProgramList();
 		mGridView.setOnItemClickListener(new ItemClickListener());
 	}
@@ -151,7 +149,7 @@ public class ProgramListActivity extends Activity {
 		}
 	}
 	
-	/*Finish activity when Backkey pressed*/
+	/*Finish activity when BackKey pressed*/
 	@Override  
 	public void onBackPressed() {   
 		this.finish();
@@ -164,7 +162,7 @@ public class ProgramListActivity extends Activity {
     	super.onAttachedToWindow();
     }
 
-    /*Finish activity when Homekey pressed*/
+    /*Finish activity when HomeKey pressed*/
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
             // TODO Auto-generated method stub
@@ -223,7 +221,7 @@ public class ProgramListActivity extends Activity {
 		super.onStop();
 	}
 	
-	/*Make the gridview of programlist*/
+	/*Make a Gridview for ProgramList*/
 	public void ShowProgramList() {
 		mGridView =  (GridView) this.findViewById(R.id.gridview);
 		ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
@@ -267,9 +265,9 @@ public class ProgramListActivity extends Activity {
 						int b = sCurrentLine.indexOf("\"", 14);
 						sProgram[i++] = sCurrentLine.substring(a + 1, b);
 					}
-					Log.d("vmvideo_wifi", sProgram[0]);
+					Log.d("vmplayeri", sProgram[0]);
 				} else {
-					Log.d("vmvideo_wifi", "FAILED");
+					Log.d("vmplayeri", "FAILED");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

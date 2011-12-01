@@ -166,5 +166,5 @@ LOCAL_SRC_FILES := \
     liveMedia/our_md5hl.c \
     liveMedia/rtcp_from_spec.c
 
-include $(BUILD_STATIC_LIBRARY)
+#include $(BUILD_STATIC_LIBRARY)
 

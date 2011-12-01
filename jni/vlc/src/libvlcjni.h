@@ -21,7 +21,6 @@ vlc_declare_plugin(libasf);
 vlc_declare_plugin(libass);
 vlc_declare_plugin(libavi);
 vlc_declare_plugin(libmp4);
-vlc_declare_plugin(live555);
 vlc_declare_plugin(mkv);
 vlc_declare_plugin(mpeg_audio);
 vlc_declare_plugin(mpgv);
@@ -70,7 +69,6 @@ const void *vlc_builtins_modules[] = {
 	vlc_plugin(libass),
 	vlc_plugin(libavi),
 	vlc_plugin(libmp4),
-	vlc_plugin(live555),
 	vlc_plugin(mkv),
 	vlc_plugin(mpeg_audio),
 	vlc_plugin(mpgv),
