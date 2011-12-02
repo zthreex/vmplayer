@@ -95,9 +95,11 @@ public class ProgramListActivity extends Activity {
 		this.setContentView(R.layout.gridview);
 		this.setTitle("ProgramList");
 		
-		for(int i=0; i<nChannelNum; i++){
+		
+		/*Initialize the drawable resource*/
+	/*	for(int i=0; i<nChannelNum; i++){
 			resIds[i] = R.drawable.cctv1;
-		}	
+		}*/	
 		
 		/* Connect to wifi server and acquire the program list */  //mod3
 		/*mWifiAdmin = new WifiAdmin(getApplicationContext());

@@ -143,9 +143,6 @@ public class VlcMediaPlayer extends AbsMediaPlayer {
 			if (mOnErrorListener != null) {
 				mOnErrorListener.onError(this, MediaPlayer.MEDIA_ERROR_UNKNOWN,
 						0);
-				//added
-				//Log.d("vmplayer", "ERROR!!!");
-				bIsOpenFaild = true;
 			}
 			break;
 		}

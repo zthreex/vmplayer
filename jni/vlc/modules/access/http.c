@@ -1128,7 +1128,11 @@ static int Connect( access_t *p_access, uint64_t i_tell )
         msg_Err( p_access, "cannot connect to %s:%d", srv.psz_host, srv.i_port );
         return -1;
     }
+
+	int optVal = 1024*1024 ;
+   	int optLen = sizeof(int);
     setsockopt (p_sys->fd, SOL_SOCKET, SO_KEEPALIVE, &(int){ 1 }, sizeof (int));
+	setsockopt (p_sys->fd, SOL_SOCKET, SO_RCVBUF,    (char*)&optVal,   optLen );
 
     /* Initialize TLS/SSL session */
     if( p_sys->b_ssl )

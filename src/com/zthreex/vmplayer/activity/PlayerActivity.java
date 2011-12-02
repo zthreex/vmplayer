@@ -30,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
@@ -132,16 +133,16 @@ public class PlayerActivity extends Activity implements
 					break;
 				}
 				case MEDIA_PLAYER_ERROR: {
-					/* fall back to VlcMediaPlayer if possible */
-					if (isDefMediaPlayer(msg.obj)) {
-						selectMediaPlayer(
-								mPlayListArray.get(mPlayListSelected), true);
-						break;
-					} else if (isVlcMediaPlayer(msg.obj)) {
+					if (isVlcMediaPlayer(msg.obj)) {
 						/* update status */
 						mMediaPlayerLoaded = true;
 						/* destroy media player */
 						mSurfaceViewVlc.setVisibility(View.GONE);
+						/*Give a toast while input can't be opened
+						 * added by zx
+						 * 2011.12.2*/
+						finish();
+						Toast.makeText(getApplicationContext(), "Can't open the program", Toast.LENGTH_LONG).show();
 					}
 					/* update UI */
 					if (mMediaPlayerLoaded)

@@ -644,7 +644,6 @@ static void *vlc_jni_player_gc_thread(void *para)
         for (int i = 0; i < sizeof(mp_listening) / sizeof(*mp_listening); i++)
         {
             libvlc_event_detach(em, mp_listening[i], vlc_event_callback, vj->object);
-            __android_log_print(ANDROID_LOG_DEBUG, "vmplayer", "_DEBUG_TRACE1");
 		}
         libvlc_media_player_stop(vj->player);
         libvlc_media_player_release(vj->player);

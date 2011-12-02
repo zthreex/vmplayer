@@ -18,7 +18,7 @@ public class WifiAdmin {
 	private List<ScanResult> mWifiList;
 	private List<WifiConfiguration> mWifiConfigurationList;
 	WifiLock mWifiLock;
-	private static final String VmvideoWifiName = "dlink18";
+	private static final String VmvideoWifiName = "\"dlink18\"";
 	//private static final String VmvideoWifiName = "ViewMobile";
 	// private static final String VmvideoWifiPassword = "12345678";
 	private int vmvideo_server_id = 0;
@@ -28,7 +28,7 @@ public class WifiAdmin {
 		mWifiManager = (WifiManager) context
 				.getSystemService(Context.WIFI_SERVICE);
 		wc = new WifiConfiguration();
-		wc.SSID = "\"dlink18\"";
+		wc.SSID = VmvideoWifiName;
 		wc.preSharedKey = "\"12345678\"";
 		wc.status = WifiConfiguration.Status.ENABLED;
 		wc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);

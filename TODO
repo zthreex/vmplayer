@@ -1,3 +1,10 @@
+12.2
+v0.016
+在mEventHandler增加对错误的处理，当不能打开视频时返回节目列表并出现提示信息
+/usr/dev/eclipse_workspace/vmplayer/jni/vlc/modules/access/http.c
+修改了socket buffer的大小
+
+
 11.29
 v0.015
 ProgramListActivity下，按下Home键或Back键直接调用finish方法，修正了一直卡在进度条的bug
@@ -37,7 +44,8 @@ v0.011
 
 
 主要功能
-	加入容错功能
+	
+	#加入容错功能
 	花时间继续熟悉程序
 	完善wifi部分功能
 	#加入自动连接wifi功能 11.21
