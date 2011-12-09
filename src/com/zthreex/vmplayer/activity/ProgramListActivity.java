@@ -102,11 +102,14 @@ public class ProgramListActivity extends Activity {
 		}*/	
 		
 		/* Connect to wifi server and acquire the program list */  //mod3
-		/*mWifiAdmin = new WifiAdmin(getApplicationContext());
-		mWifiAdmin.OpenWifi(); 
-		mWifiAdmin.StartScan();
-		mWifiAdmin.ConnectToVmvideo1();*/
-
+		//mWifiAdmin = new WifiAdmin(getApplicationContext());
+		//mWifiAdmin.OpenWifi(); 
+		//mWifiAdmin.StartScan();
+		//mWifiAdmin.ConnectToVmvideo1();
+		//mWifiAdmin.CreatWifiLock();
+		//mWifiAdmin.AcquireWifiLock();
+		
+		
 		int retry_count = 0;
 		do {
 			titles = sGetProgramList(false);
@@ -154,6 +157,7 @@ public class ProgramListActivity extends Activity {
 	/*Finish activity when BackKey pressed*/
 	@Override  
 	public void onBackPressed() {   
+		//mWifiAdmin.DisableVmvideo();
 		this.finish();
 	}  
 
@@ -169,6 +173,7 @@ public class ProgramListActivity extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
             // TODO Auto-generated method stub
             if(keyCode == KeyEvent.KEYCODE_HOME) {
+            	//mWifiAdmin.DisableVmvideo();
             	ProgramListActivity.this.finish();
             }
             return super.onKeyDown(keyCode, event);

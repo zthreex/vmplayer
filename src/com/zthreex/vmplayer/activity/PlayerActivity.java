@@ -43,6 +43,8 @@ public class PlayerActivity extends Activity implements
 		OnClickListener, OnSeekBarChangeListener {
 
 	static final String LOGTAG = "zthreex-PlayerActivity";
+	
+	private int nErrorCount = 0;
 
 	private static final int SURFACE_NONE = 0;
 	private static final int SURFACE_FILL = 1;
@@ -135,14 +137,19 @@ public class PlayerActivity extends Activity implements
 				case MEDIA_PLAYER_ERROR: {
 					if (isVlcMediaPlayer(msg.obj)) {
 						/* update status */
-						mMediaPlayerLoaded = true;
-						/* destroy media player */
-						mSurfaceViewVlc.setVisibility(View.GONE);
-						/*Give a toast while input can't be opened
-						 * added by zx
-						 * 2011.12.2*/
-						finish();
-						Toast.makeText(getApplicationContext(), "Can't open the program", Toast.LENGTH_LONG).show();
+						nErrorCount++;
+						if (nErrorCount >= 1) {
+							mMediaPlayerLoaded = true;
+							/* destroy media player */
+							mSurfaceViewVlc.setVisibility(View.GONE);
+							/* Give a toast while input can't be opened added*/
+							nErrorCount  = 0;
+							finish();
+							Toast.makeText(getApplicationContext(),
+									"Can't open the program", Toast.LENGTH_LONG)
+									.show();
+						}
+						onRetry();
 					}
 					/* update UI */
 					if (mMediaPlayerLoaded)
@@ -176,7 +183,6 @@ public class PlayerActivity extends Activity implements
 									.getTimeString(mLength));
 							mSeekBarProgress.setMax(mLength);
 						}
-				
 						int time = msg.arg1;
 						if (time >= 0) {
 							mTime = time;
@@ -501,20 +507,19 @@ public class PlayerActivity extends Activity implements
 		initializeData();
 		String uri = mPlayListArray.get(mPlayListSelected);
 		selectMediaPlayer(uri, true); //set true to select vlc media player
-		Log.d("vmplayer", "createddddddddddd");
 	}
 
 	
-	/*@Override
-	public void onRestart() {
-		super.onStart();
-		if(VlcMediaPlayer.IsOpenFailed()==true)
-			Log.d("vmplayer", "true");
-		else {
-			Toast.makeText(getApplicationContext(), "Failed,please retry", Toast.LENGTH_SHORT).show();
-			this.finish();
-		}
-	}*/
+	public void onRetry() {
+		Log.d("vmplayer", "onretry");
+		initializeEvents();
+		setContentView(R.layout.player);
+		initializeControls();
+		mProgressBarPreparing.setVisibility(View.VISIBLE);
+		initializeData();
+		String uri = mPlayListArray.get(mPlayListSelected);
+		selectMediaPlayer(uri, true); //set true to select vlc media player
+	}
 	
 	@Override
 	public void onDestroy() {

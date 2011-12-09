@@ -105,8 +105,6 @@ public abstract class AbsMediaPlayer {
 
 	public abstract void setSubtitleTrack(int index);
 	
-	//public abstract Boolean IsTotallyRemoved();
-	
 
 	protected static AbsMediaPlayer getDefMediaPlayer() {
 		Log.d(LOGTAG, "using DefMediaPlayer");

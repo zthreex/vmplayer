@@ -15,7 +15,7 @@ public class DefMediaPlayer extends AbsMediaPlayer implements
 		MediaPlayer.OnSeekCompleteListener,
 		MediaPlayer.OnVideoSizeChangedListener {
 
-	private static final String LOGTAG = "DANMAKU-DefMediaPlayer";
+	private static final String LOGTAG = "zthreex-DefMediaPlayer";
 
 	protected static DefMediaPlayer sInstance = null;
 
@@ -24,7 +24,7 @@ public class DefMediaPlayer extends AbsMediaPlayer implements
 	private Timer mTimer = null;
 	private TimerTask mTimerTask = new TimerTask() {
 		@Override
-		//moded,sInstance instead of mMediaPlayer
+		//mod,sInstance instead of mMediaPlayer
 		public void run() {
 			if (sInstance == null || mOnProgressUpdateListener == null)
 				return;
